@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+/* One palette ("Forest"): cool neutrals + a single deep-green accent. Dark mode follows the OS. */
+@theme {
+  --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  --color-bg: #f4f6f4;
+  --color-surface: #ffffff;
+  --color-ink: #14201b;
+  --color-muted: #55635c;
+  --color-line: #dde3df;
+  --color-accent: #1d5c47;
+  --color-accent-fg: #f4f6f4;
+  --color-accent-soft: #e2eee8;
+  --color-danger: #b42318;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #0e1412;
+    --color-surface: #161f1b;
+    --color-ink: #e7ece9;
+    --color-muted: #9aa8a1;
+    --color-line: #26322d;
+    --color-accent: #6cc9a1;
+    --color-accent-fg: #0e1412;
+    --color-accent-soft: #1b2e26;
+    --color-danger: #f97066;
+  }
+}
+
+body { @apply bg-bg text-ink antialiased; }
+
+/* Shared form + button primitives. Radius system: controls 10px, cards 16px, pills full. */
+.input {
+  @apply w-full rounded-[10px] border border-line bg-surface px-3.5 py-2.5 text-ink outline-none transition
+    placeholder:text-muted/80 focus:border-accent focus:ring-2 focus:ring-accent/25;
+}
+.label { @apply text-sm font-medium text-ink; }
+.btn {
+  @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full bg-accent px-5 py-2.5
+    text-sm font-semibold text-accent-fg transition active:scale-[0.98] disabled:opacity-60 hover:opacity-90;
+}
+.btn-ghost {
+  @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full border border-line px-5 py-2.5
+    text-sm font-semibold text-ink transition hover:bg-accent-soft active:scale-[0.98];
+}
+.card { @apply rounded-2xl border border-line bg-surface; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .rise { animation: rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both; }
+  @keyframes rise { from { opacity: 0; transform: translateY(16px); } }
+}
