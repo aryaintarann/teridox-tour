@@ -26,14 +26,34 @@ export function verify(headers: Headers, rawBody: string, target: string, secret
   return a.length === b.length && timingSafeEqual(a, b);
 }
 
+// Checkout method codes, per https://developers.doku.com/accept-payments/doku-checkout/checkout-settings
+export const PAY_METHODS = {
+  card: { CREDIT_CARD: "Card" },
+  va: { VIRTUAL_ACCOUNT_BCA: "BCA", VIRTUAL_ACCOUNT_BANK_MANDIRI: "Mandiri", VIRTUAL_ACCOUNT_BNI: "BNI", VIRTUAL_ACCOUNT_BRI: "BRI" },
+  ewallet: { EMONEY_OVO: "OVO", EMONEY_SHOPEE_PAY: "ShopeePay" },
+  qris: { QRIS: "QRIS" },
+} as const;
+export type PayGroup = keyof typeof PAY_METHODS;
+
+// DOKU channel id -> short label ("VIRTUAL_ACCOUNT_BCA" -> "VA BCA").
+export function methodLabel(code: string | null | undefined) {
+  if (!code) return "-";
+  for (const [group, codes] of Object.entries(PAY_METHODS)) {
+    const label = (codes as Record<string, string>)[code];
+    if (label) return group === "va" ? `VA ${label}` : label;
+  }
+  return code.replace(/_/g, " ").toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
 type CheckoutInput = {
   invoice: string;
+  methodTypes?: string[];
   amount: number;
   callbackUrl: string;
   customer: { id: string; name: string; email: string; phone: string };
 };
 
-export async function createCheckout({ invoice, amount, callbackUrl, customer }: CheckoutInput) {
+export async function createCheckout({ invoice, amount, callbackUrl, customer, methodTypes }: CheckoutInput) {
   const clientId = process.env.DOKU_CLIENT_ID, secret = process.env.DOKU_SECRET_KEY;
   if (!clientId || !secret) throw new Error("DOKU is not configured");
 
@@ -42,7 +62,7 @@ export async function createCheckout({ invoice, amount, callbackUrl, customer }:
   const timestamp = new Date().toISOString().slice(0, 19) + "Z";
   const body = JSON.stringify({
     order: { amount, invoice_number: invoice, currency: "IDR", callback_url: callbackUrl },
-    payment: { payment_due_date: 60 },
+    payment: { payment_due_date: 60, ...(methodTypes?.length && { payment_method_types: methodTypes }) },
     customer: { id: customer.id, name: customer.name, email: customer.email, phone: customer.phone.replace(/\D/g, "") },
   });
 

@@ -1,52 +1,74 @@
 @import "tailwindcss";
 
-/* One palette ("Forest"): cool neutrals + a single deep-green accent. Dark mode follows the OS. */
+/* TeridoxTour prototype palette: warm paper, ink, terracotta. Light theme only, per the design. */
 @theme {
-  --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
-  --color-bg: #f4f6f4;
+  --font-sans: var(--font-hanken), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-newsreader), Georgia, serif;
+  --color-bg: #faf7f2;
   --color-surface: #ffffff;
-  --color-ink: #14201b;
-  --color-muted: #55635c;
-  --color-line: #dde3df;
-  --color-accent: #1d5c47;
-  --color-accent-fg: #f4f6f4;
-  --color-accent-soft: #e2eee8;
-  --color-danger: #b42318;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-bg: #0e1412;
-    --color-surface: #161f1b;
-    --color-ink: #e7ece9;
-    --color-muted: #9aa8a1;
-    --color-line: #26322d;
-    --color-accent: #6cc9a1;
-    --color-accent-fg: #0e1412;
-    --color-accent-soft: #1b2e26;
-    --color-danger: #f97066;
-  }
+  --color-ink: #1a1714;
+  --color-ink-2: #3c362f;
+  --color-ink-3: #4a443e;
+  --color-muted: #6f6862;
+  --color-faint: #8a8078;
+  --color-line: #e6dfd5;
+  --color-line-2: #e0d8cc;
+  --color-hair: #efe9e0;
+  --color-accent: #c2602c;
+  --color-accent-hover: #a64f21;
+  --color-accent-text: #b85c28;
+  --color-accent-soft: #f6e9df;
+  --color-accent-deep: #8f4419;
+  --color-sand: #f4eee6;
+  --color-ok: #2f6b50;
+  --color-ok-soft: #e7f1ea;
+  --color-danger: #a8443a;
+  --color-danger-soft: #fbecea;
+  --color-warn: #8a6314;
+  --color-warn-soft: #fcf1dc;
+  --color-info: #2b5da8;
+  --color-info-soft: #e8f0fb;
+  /* vendor console */
+  --color-console: #15181c;
+  --color-console-2: #1d2126;
+  --color-console-3: #262b31;
+  --color-console-line: #2c333b;
+  --color-console-muted: #8b94a0;
+  --color-admin-bg: #f4f5f7;
+  --color-admin-line: #e3e6ea;
+  --color-admin-muted: #6e7783;
 }
 
 body { @apply bg-bg text-ink antialiased; }
+::placeholder { color: #a69c90; }
 
-/* Shared form + button primitives. Radius system: controls 10px, cards 16px, pills full. */
 .input {
-  @apply w-full rounded-[10px] border border-line bg-surface px-3.5 py-2.5 text-ink outline-none transition
-    placeholder:text-muted/80 focus:border-accent focus:ring-2 focus:ring-accent/25;
+  @apply w-full rounded-[11px] border border-line-2 bg-surface px-[15px] py-[13px] text-[15px] text-ink outline-none transition
+    focus:border-accent focus:ring-2 focus:ring-accent/25;
 }
-.label { @apply text-sm font-medium text-ink; }
+.label { @apply mb-[7px] block text-[13.5px] font-semibold; }
+.field-error { @apply mt-1.5 text-[12.5px] text-danger; }
 .btn {
-  @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full bg-accent px-5 py-2.5
-    text-sm font-semibold text-accent-fg transition active:scale-[0.98] disabled:opacity-60 hover:opacity-90;
+  @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full bg-accent px-7 py-4 text-[15px] font-semibold text-white
+    transition hover:bg-accent-hover active:scale-[0.98] disabled:opacity-60;
+}
+.btn-dark {
+  @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl bg-ink px-6 py-4 text-base font-bold text-white
+    transition hover:bg-accent active:scale-[0.98] disabled:opacity-60;
 }
 .btn-ghost {
-  @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full border border-line px-5 py-2.5
-    text-sm font-semibold text-ink transition hover:bg-accent-soft active:scale-[0.98];
+  @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl border border-line-2 bg-surface px-6 py-[15px] text-[15px] font-semibold text-ink
+    transition hover:border-accent active:scale-[0.98];
 }
-.card { @apply rounded-2xl border border-line bg-surface; }
+.card { @apply rounded-[20px] border border-line bg-surface; }
+.float-card { @apply rounded-[22px] border border-line bg-surface p-[26px] shadow-[0_18px_40px_-28px_rgba(60,44,28,0.45)]; }
+.display { font-family: var(--font-serif); letter-spacing: -0.02em; }
 
 @media (prefers-reduced-motion: no-preference) {
   .rise { animation: rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both; }
-  @keyframes rise { from { opacity: 0; transform: translateY(16px); } }
+  @keyframes rise { from { opacity: 0; transform: translateY(14px); } }
+}
+
+@media print {
+  header, footer, .no-print { display: none !important; }
 }

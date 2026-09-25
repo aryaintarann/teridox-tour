@@ -1,16 +1,18 @@
 const tone: Record<string, string> = {
-  pending: "bg-amber-500/15 text-amber-800 dark:text-amber-300",
-  paid: "bg-accent-soft text-accent",
-  success: "bg-accent-soft text-accent",
-  confirmed: "bg-accent text-accent-fg",
-  completed: "bg-line text-ink",
-  cancelled: "bg-danger/10 text-danger",
-  failed: "bg-danger/10 text-danger",
+  pending: "bg-warn-soft text-warn",
+  paid: "bg-info-soft text-info",
+  confirmed: "bg-ok-soft text-ok",
+  success: "bg-ok-soft text-ok",
+  active: "bg-ok-soft text-ok",
+  completed: "bg-[#eff1f4] text-[#5a636d]",
+  inactive: "bg-warn-soft text-warn",
+  cancelled: "bg-danger-soft text-danger",
+  failed: "bg-danger-soft text-danger",
 };
 
 export function StatusBadge({ status, label }: { status: string; label: string }) {
   return (
-    <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold ${tone[status] ?? "bg-line"}`}>
+    <span className={`inline-flex whitespace-nowrap rounded-full px-[11px] py-[5px] text-xs font-bold ${tone[status] ?? "bg-[#eff1f4]"}`}>
       {label}
     </span>
   );

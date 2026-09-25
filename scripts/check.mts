@@ -18,3 +18,9 @@ assert.equal(verify(headers, body, h.target, "wrong"), false, "wrong secret reje
 headers.delete("signature");
 assert.equal(verify(headers, body, h.target, secret), false, "missing signature rejected");
 console.log("doku signature: ok");
+
+import { priceBreakdown } from "../lib/pricing.ts";
+// Same numbers the SQL in create_booking() must produce.
+assert.deepEqual(priceBreakdown(18_500_000, 2), { subtotal: 37_000_000, fee: 250_000, tax: 4_070_000, total: 41_320_000 });
+assert.deepEqual(priceBreakdown(3_450_000, 3), { subtotal: 10_350_000, fee: 250_000, tax: 1_138_500, total: 11_738_500 });
+console.log("pricing: ok");

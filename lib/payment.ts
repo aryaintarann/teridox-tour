@@ -6,12 +6,14 @@ import type { Profile } from "@/lib/auth";
 export async function startPayment(
   booking: { id: string; booking_code: string; total_price: number },
   profile: Profile,
+  methodTypes?: string[],
 ) {
   const { requestId, url } = await createCheckout({
     invoice: booking.booking_code,
     amount: booking.total_price,
-    callbackUrl: `${process.env.NEXT_PUBLIC_SITE_URL}/booking/${booking.booking_code}`,
+    callbackUrl: `${process.env.NEXT_PUBLIC_SITE_URL}/booking/${booking.booking_code}/confirmed`,
     customer: { id: profile.id, name: profile.full_name, email: profile.email, phone: profile.phone },
+    methodTypes,
   });
   const { error } = await createAdminClient().from("payments").insert({
     booking_id: booking.id,

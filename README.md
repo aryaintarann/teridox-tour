@@ -5,7 +5,7 @@ Booking tour single-vendor. Spesifikasi: [PRD.md](PRD.md), [ARCHITECTURE.md](ARC
 ## Setup
 
 1. `pnpm install`, lalu `cp .env.example .env.local` dan isi nilainya.
-2. Buat project Supabase, jalankan `supabase/migrations/0001_init.sql` lalu (opsional) `supabase/seed.sql` di SQL Editor.
+2. Buat project Supabase, jalankan berurutan di SQL Editor: `supabase/migrations/0001_init.sql`, `supabase/migrations/0002_design_prototype.sql`, lalu (opsional) `supabase/seed.sql`.
 3. Supabase Auth > URL Configuration: Site URL = `NEXT_PUBLIC_SITE_URL`, tambahkan `<site>/auth/callback` ke Redirect URLs.
 4. Daftar lewat `/register`, lalu jadikan admin:
    `update public.profiles set role = 'admin' where email = 'anda@email.com';`

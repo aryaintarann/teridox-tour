@@ -27,7 +27,7 @@ export async function POST(request: Request) {
   if (!payment) return Response.json({ ok: true, duplicate: true });
 
   const { data: booking } = await db
-    .from("bookings").update({ status: "paid" }).eq("id", payment.booking_id).eq("status", "pending").select("id").maybeSingle();
+    .from("bookings").update({ status: "paid", paid_at: new Date().toISOString() }).eq("id", payment.booking_id).eq("status", "pending").select("id").maybeSingle();
 
   // A paid booking that already expired stays cancelled; admin sees the successful payment and refunds or rebooks.
   if (booking) after(() => notifyBooking(booking.id, "payment_success"));

@@ -21,6 +21,14 @@ export const toWaNumber = (phone: string) => {
   return d.startsWith("0") ? "62" + d.slice(1) : d;
 };
 
-export const STATUS_LABEL: Record<string, string> = {
-  pending: "Menunggu bayar", paid: "Dibayar", confirmed: "Dikonfirmasi", cancelled: "Dibatalkan", completed: "Selesai",
-};
+
+// "12 Nov 2026"
+export const formatDay = (d: string, lang: Lang) =>
+  new Intl.DateTimeFormat(lang === "en" ? "en-GB" : "id-ID", { day: "2-digit", month: "short", year: "numeric", timeZone: "UTC" })
+    .format(new Date(d.slice(0, 10) + "T00:00:00Z"));
+
+// "12 Sep 2026, 10.24" in WITA
+export const formatStamp = (ts: string, lang: Lang) =>
+  new Intl.DateTimeFormat(lang === "en" ? "en-GB" : "id-ID", {
+    day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit", timeZone: "Asia/Makassar",
+  }).format(new Date(ts));

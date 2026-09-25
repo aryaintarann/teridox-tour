@@ -1,28 +1,26 @@
 import Link from "next/link";
 import { getT } from "@/lib/i18n";
-import { ActionForm } from "@/components/ActionForm";
-import { AuthShell, Field } from "@/components/AuthShell";
-import { SubmitButton } from "@/components/SubmitButton";
+import { LoginForm } from "@/components/AuthForms";
 import { login } from "../actions";
 
-export const metadata = { title: "Login" };
+export const metadata = { title: "Log in" };
 
 export default async function LoginPage({ searchParams }: { searchParams: Promise<{ next?: string }> }) {
   const { next = "" } = await searchParams;
   const { t } = await getT();
-  const q = next ? `?next=${encodeURIComponent(next)}` : "";
   return (
-    <AuthShell title={t("login_title")}>
-      <ActionForm action={login}>
-        <input type="hidden" name="next" value={next} />
-        <Field label={t("email")} name="email" type="email" autoComplete="email" required />
-        <Field label={t("password")} name="password" type="password" autoComplete="current-password" required />
-        <Link href="/forgot-password" className="-mt-2 text-sm text-accent">{t("forgot")}</Link>
-        <SubmitButton>{t("nav_login")}</SubmitButton>
-      </ActionForm>
-      <p className="mt-6 text-sm text-muted">
-        {t("no_account")} <Link href={`/register${q}`} className="font-semibold text-accent">{t("register_cta")}</Link>
-      </p>
-    </AuthShell>
+    <div className="flex justify-center px-4 pb-[100px] pt-20">
+      <div className="w-full max-w-[440px]">
+        <h1 className="display text-center text-[36px] tracking-[-0.8px]">{t("login_title")}</h1>
+        <p className="mt-2 text-center text-[15px] text-muted">{t("login_sub")}</p>
+        <div className="card mt-7 flex flex-col gap-[18px] p-8">
+          <LoginForm action={login} next={next} s={{ email: t("email"), password: t("password"), forgot: t("forgot"), login: t("login") }} />
+          <p className="text-center text-sm text-muted">
+            {t("no_account")} <Link href={`/register${next ? `?next=${encodeURIComponent(next)}` : ""}`} className="font-semibold text-accent-text">{t("register")}</Link>
+          </p>
+        </div>
+        <Link href="/admin/login" className="mt-5 block text-center text-[13px] text-faint hover:text-accent">{t("admin_entry")} &rarr;</Link>
+      </div>
+    </div>
   );
 }
